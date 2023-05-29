@@ -12,9 +12,7 @@ import {evaluate, prodDependencies} from 'mathjs';
     const [input, setInput] = useState('');
 
     const agregarInput = val => {
-      if (input.length < 9) {
-        setInput(prevInput => prevInput + val);
-      }
+      setInput(prevInput => prevInput + val);
     };
 
     const calcularResultado = () => {
@@ -25,7 +23,11 @@ import {evaluate, prodDependencies} from 'mathjs';
         } else {
           const formattedResult = Number(resultado);
           if (Number.isInteger(formattedResult)) {
-            setInput(formattedResult.toString());
+            if (formattedResult > 999999999) {
+              setInput("ERROR");
+            } else {
+              setInput(formattedResult.toString());
+            }
           } else {
             setInput(formattedResult.toFixed(8));
           }
