@@ -1,15 +1,14 @@
 import React from "react";
-import './Display.css';
+import "./Display.css";
 
+const Display = ({ input }) => {
+  const isNegative = input.startsWith("-");
 
-const Display = ({input}) => {
-
-    return(
-    <div className='input'>
-        {input}
-
+  return (
+    <div className={`input ${isNegative ? "negativo" : ""}`}>
+      {input}
     </div>
-    )
-}
+  );
+};
 
 export default Display;

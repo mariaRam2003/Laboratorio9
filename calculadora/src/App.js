@@ -10,34 +10,52 @@ import {evaluate, prodDependencies} from 'mathjs';
   function App() {
 
     const [input, setInput] = useState('');
+    const [isNegative, setIsNegative] = useState(false);
+
+    const cambiarSigno = () => {
+      if (input !== "") {
+        setInput(prevInput => {
+          const num = parseFloat(prevInput);
+          const negativo = -num;
+          setIsNegative(!isNegative);
+          return negativo.toString();
+        });
+      }
+    };
+    
 
     const agregarInput = val => {
       if (input.length < 21) {
-        setInput(prevInput => prevInput + val);
+        setInput(prevInput => {
+          let newInput = prevInput + val;
+          if (isNegative && val !== "-") {
+            newInput = "-" + newInput;
+          }
+          return newInput;
+        });
       }
     };
+    
 
     const calcularResultado = () => {
       if (input) {
         const resultado = evaluate(input);
-        if (resultado < 0) {
-          setInput("ERROR***");
+        const formattedResult = Number(resultado);
+    
+        if (Number.isNaN(formattedResult) || formattedResult > 999999999) {
+          setInput("ERROR");
         } else {
-          const formattedResult = Number(resultado);
-          if (Number.isInteger(formattedResult)) {
-            if (formattedResult > 999999999) {
-              setInput("ERROR");
-            } else {
-              setInput(formattedResult.toString());
-            }
+          if (formattedResult < 0) {
+            setInput("ERROR***");
           } else {
-            setInput(formattedResult.toFixed(8));
+            setInput(formattedResult.toString());
           }
         }
       } else {
         alert("Por favor ingrese valores para realizar los cálculos");
       }
     };
+    
     
     
     
@@ -98,6 +116,8 @@ import {evaluate, prodDependencies} from 'mathjs';
             
             <div className='fila'>
               <ButtonClear manejarClear={() => setInput('')}>Clear</ButtonClear>
+              <Button manejarClic={cambiarSigno}>+/-</Button>
+
                 
             </div>
 
