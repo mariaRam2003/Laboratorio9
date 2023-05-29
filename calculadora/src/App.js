@@ -12,12 +12,36 @@ import {evaluate, prodDependencies} from 'mathjs';
     const [input, setInput] = useState('');
     const [isNegative, setIsNegative] = useState(false);
 
+    const realizarModulo = () => {
+      if (input) {
+        const operadores = ["+", "-", "*", "/", "%"];
+        const operadorIndex = input.split("").findIndex((char) => operadores.includes(char));
+    
+        if (operadorIndex !== -1) {
+          const num1 = parseFloat(input.slice(0, operadorIndex));
+          const num2 = parseFloat(input.slice(operadorIndex + 1));
+          
+          if (num2 !== 0) {
+            const resultado = num1 % num2;
+            setInput(resultado.toString());
+          } else {
+            setInput("ERROR");
+          }
+        } else {
+          setInput("ERROR");
+        }
+      } else {
+        alert("Por favor ingrese valores para realizar los cálculos");
+      }
+    };
+      
+
     const cambiarSigno = () => {
       if (input !== "") {
         setInput(prevInput => {
           const num = parseFloat(prevInput);
           const negativo = -num;
-          setIsNegative(!isNegative);
+          setIsNegative(prevIsNegative => !prevIsNegative);
           return negativo.toString();
         });
       }
@@ -48,7 +72,11 @@ import {evaluate, prodDependencies} from 'mathjs';
           if (formattedResult < 0) {
             setInput("ERROR***");
           } else {
-            setInput(formattedResult.toString());
+            if (Number.isInteger(formattedResult)) {
+              setInput(parseInt(formattedResult).toString()); // Mostrar como entero
+            } else {
+              setInput(formattedResult.toFixed(9).toString()); // Limitar a 9 decimales
+            }
           }
         }
       } else {
@@ -57,16 +85,12 @@ import {evaluate, prodDependencies} from 'mathjs';
     };
     
     
-    
-    
-    
-
     useEffect(() => {
       const handleKeyDown = event => {
         const { key } = event;
         if (/[0-9]/.test(key) && input.length < 9) {
           agregarInput(key);
-        } else if (key === '+' || key === '-' || key === '*' || key === '/') {
+        } else if (key === '+' || key === '-' || key === '*' || key === '/' || key === '%') {
           agregarInput(key);
         } else if (key === '=') {
           calcularResultado();
@@ -117,7 +141,7 @@ import {evaluate, prodDependencies} from 'mathjs';
             <div className='fila'>
               <ButtonClear manejarClear={() => setInput('')}>Clear</ButtonClear>
               <Button manejarClic={cambiarSigno}>+/-</Button>
-
+              <Button manejarClic={realizarModulo}>%</Button>
                 
             </div>
 
