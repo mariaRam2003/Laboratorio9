@@ -18,10 +18,13 @@ import {evaluate, prodDependencies} from 'mathjs';
     };
 
     const calcularResultado = () => {
-      let resultado;
       if(input){
-        resultado = evaluate(input);
+        const resultado = evaluate(input);
+        if (resultado < 0) {
+          setInput("ERROR***");
+        }else{
         setInput(Number(resultado).toFixed(8));
+        }
       }else{
         alert("Por favor ingrese valores para realizar los calculos");
       }
