@@ -12,11 +12,13 @@ import {evaluate, prodDependencies} from 'mathjs';
     const [input, setInput] = useState('');
 
     const agregarInput = val => {
-      setInput(prevInput => prevInput + val);
+      if (input.length < 21) {
+        setInput(prevInput => prevInput + val);
+      }
     };
 
     const calcularResultado = () => {
-      if(input){
+      if (input) {
         const resultado = evaluate(input);
         if (resultado < 0) {
           setInput("ERROR***");
@@ -36,6 +38,10 @@ import {evaluate, prodDependencies} from 'mathjs';
         alert("Por favor ingrese valores para realizar los cálculos");
       }
     };
+    
+    
+    
+    
 
     useEffect(() => {
       const handleKeyDown = event => {
@@ -68,7 +74,6 @@ import {evaluate, prodDependencies} from 'mathjs';
               <Button manejarClic={agregarInput}>2</Button>
               <Button manejarClic={agregarInput}>3</Button>
               <Button manejarClic={agregarInput}>+</Button>
-
             </div>
             <div className='fila'>
               <Button manejarClic={agregarInput}>4</Button>
@@ -89,11 +94,11 @@ import {evaluate, prodDependencies} from 'mathjs';
               <Button manejarClic={agregarInput}>0</Button>
               <Button manejarClic={agregarInput}>.</Button>
               <Button manejarClic={agregarInput}>/</Button>
-
             </div>
+            
             <div className='fila'>
               <ButtonClear manejarClear={() => setInput('')}>Clear</ButtonClear>
-
+                
             </div>
 
           </div>
