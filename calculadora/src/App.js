@@ -22,11 +22,16 @@ import {evaluate, prodDependencies} from 'mathjs';
         const resultado = evaluate(input);
         if (resultado < 0) {
           setInput("ERROR***");
-        }else{
-        setInput(Number(resultado).toFixed(8));
+        } else {
+          const formattedResult = Number(resultado);
+          if (Number.isInteger(formattedResult)) {
+            setInput(formattedResult.toString());
+          } else {
+            setInput(formattedResult.toFixed(8));
+          }
         }
-      }else{
-        alert("Por favor ingrese valores para realizar los calculos");
+      } else {
+        alert("Por favor ingrese valores para realizar los cálculos");
       }
     };
 
